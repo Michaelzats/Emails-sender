@@ -1,0 +1,21 @@
+import csv, smtplib, ssl
+# YOU HAVE TO ALLOW GOOGLE TO GO THROUGH THE UNTRASTABLE WEBSITES -- https://myaccount.google.com/u/3/security
+
+message = """Subject: # THE HEADLINE OF THE EAMIL Your grade
+
+Hi {Firstname}, your grade is {Lastname}"""
+from_address = "#EMAIL OF THE SENDER"
+password = input("Type your password and press enter: ")
+
+context = ssl.create_default_context()
+with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
+    server.login(from_address, password)
+    with open("Book6 - Book6.csv") as file:
+        reader = csv.reader(file)
+        next(reader)  # Skip header row
+        for email, Firstname, Lastname in reader:
+            server.sendmail(
+                from_address,
+                email,
+                message.format(#COLOUMNS -  Firstname=Firstname,Lastname=Lastname),
+            )
